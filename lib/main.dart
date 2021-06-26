@@ -11,17 +11,26 @@ import 'package:flame/util.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flame/flame.dart';
 
 import 'box-game.dart';
+import 'langaw-game.dart';
 
 void main() {
-  BoxGame game = BoxGame();
+  LangawGame game = LangawGame();
   TapGestureRecognizer tapper = TapGestureRecognizer();
   tapper.onTapDown = game.onTapDown;
   runApp(game.widget);
 
   final flameUtil = Util();
   flameUtil.fullScreen();
-  flameUtil.setOrientation(DeviceOrientation.portraitUp);
   flameUtil.addGestureRecognizer(tapper);
+  flameUtil.setOrientation(DeviceOrientation.portraitUp);
+  Flame.images.loadAll(<String>[
+    'bg/backyard.png',
+    'actors/dog.png',
+    'actors/pirate-woman.png',
+    'actors/samurai.png',
+    'actors/white-hair-man.png'
+  ]);
 }
