@@ -31,7 +31,7 @@ class Callout {
   void update(double t) {
     if (fly.game.activeView == View.playing) {
       value = value - .5 * t;
-      if (value <= 0) {
+      if (!fly.isDead && value <= 0) {
         // if (fly.game.soundButton.isEnabled) {
         //   Flame.audio.play('力及ばず.mp3');
         // }
