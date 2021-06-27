@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'dart:ui';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:flame/game.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/gestures.dart';
@@ -19,8 +20,14 @@ import 'package:myapp/components/credits-button.dart';
 import 'package:myapp/components/help-button.dart';
 import 'package:myapp/views/help-view.dart';
 import 'package:myapp/views/credits-view.dart';
+import 'package:myapp/components/score-display.dart';
+import 'package:myapp/components/highscore-display.dart';
+import 'package:myapp/components/music-button.dart';
+import 'package:myapp/components/sound-button.dart';
+// import 'package:audioplayers/audioplayers.dart';
 
 class LangawGame extends Game {
+  late final SharedPreferences storage;
   late Size screenSize;
   late double tileSize;
   late Backyard background;
@@ -35,10 +42,18 @@ class LangawGame extends Game {
   late CreditsButton creditsButton;
   late HelpView helpView;
   late CreditsView creditsView;
+  late ScoreDisplay scoreDisplay;
+  late HighscoreDisplay highscoreDisplay;
 
   late FlySpawner spawner;
+  // late AudioPlayer homeBGM;
+  // late AudioPlayer playingBGM;
+  late MusicButton musicButton;
+  late SoundButton soundButton;
 
-  LangawGame() {
+  late int score;
+
+  LangawGame(this.storage) {
     initialize();
   }
 
@@ -55,9 +70,34 @@ class LangawGame extends Game {
     creditsButton = CreditsButton(this);
     helpView = HelpView(this);
     creditsView = CreditsView(this);
+    scoreDisplay = ScoreDisplay(this);
+    highscoreDisplay = HighscoreDisplay(this);
 
     spawner = FlySpawner(this);
+
+    score = 0;
+
+    musicButton = MusicButton(this);
+    soundButton = SoundButton(this);
+
+    // homeBGM = await Flame.audio.loop('ホームタウン.mp3', volume: .25);
+    // homeBGM.pause();
+    // playingBGM = await Flame.audio.loop('ゆるドラシル.mp3', volume: .25);
+    // playingBGM.pause();
+    // playHomeBGM();
   }
+
+  // void playHomeBGM() {
+  //   playingBGM.pause();
+  //   playingBGM.seek(Duration.zero);
+  //   homeBGM.stop();
+  // }
+
+  // void playPlayingBGM() {
+  //   homeBGM.pause();
+  //   homeBGM.seek(Duration.zero);
+  //   playingBGM.stop();
+  // }
 
   void spawnFly() {
     double x = rnd.nextDouble() * (screenSize.width - tileSize);
@@ -80,8 +120,11 @@ class LangawGame extends Game {
 
   void render(Canvas c) {
     background.render(c);
+    highscoreDisplay.render(c);
     helpButton.render(c);
     creditsButton.render(c);
+    musicButton.render(c);
+    soundButton.render(c);
 
     flies.forEach((Fly fly) => fly.render(c));
     if (activeView == View.home) homeView.render(c);
@@ -91,11 +134,13 @@ class LangawGame extends Game {
     if (activeView == View.lost) lostView.render(c);
     if (activeView == View.help) helpView.render(c);
     if (activeView == View.credits) creditsView.render(c);
+    if (activeView == View.playing) scoreDisplay.render(c);
   }
 
   void update(double t) {
     flies.forEach((Fly fly) => fly.update(t));
     flies.removeWhere((Fly fly) => fly.isOffScreen);
+    if (activeView == View.playing) scoreDisplay.update(t);
     spawner.update(t);
   }
 
@@ -124,6 +169,10 @@ class LangawGame extends Game {
         }
       });
       if (activeView == View.playing && !didHitAFly) {
+        // if (soundButton.isEnabled) {
+        //   Flame.audio.play('力及ばず.mp3');
+        // }
+        // playHomeBGM();
         activeView = View.lost;
       }
     }
@@ -147,6 +196,16 @@ class LangawGame extends Game {
         creditsButton.onTapDown();
         isHandled = true;
       }
+    }
+    // music button
+    if (!isHandled && musicButton.rect.contains(d.globalPosition)) {
+      musicButton.onTapDown();
+      isHandled = true;
+    }
+    // sound button
+    if (!isHandled && soundButton.rect.contains(d.globalPosition)) {
+      soundButton.onTapDown();
+      isHandled = true;
     }
   }
 }
