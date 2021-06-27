@@ -20,3 +20,5 @@ flutter run --no-sound-null-safety
 
 ## build web
 flutter build web --no-sound-null-safety
+
+https://www.figma.com/team_invite/redeem/nHSHq37MUye1HR990vG94g

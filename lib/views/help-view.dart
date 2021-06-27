@@ -1,0 +1,23 @@
+import 'dart:ui';
+import 'package:flame/sprite.dart';
+import 'package:myapp/langaw-game.dart';
+
+class HelpView {
+  final LangawGame game;
+  late Rect rect;
+  late Sprite sprite;
+
+  HelpView(this.game) {
+    rect = Rect.fromLTWH(
+      game.tileSize * .5,
+      (game.screenSize.height / 2) - (game.tileSize * 6),
+      game.tileSize * 8,
+      game.tileSize * 12,
+    );
+    sprite = Sprite('ui/home.png');
+  }
+
+  void render(Canvas c) {
+    sprite.renderRect(c, rect);
+  }
+}

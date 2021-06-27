@@ -52,6 +52,11 @@ flutter:
     - assets/images/actors/pirate-woman.png
     - assets/images/actors/samurai.png
     - assets/images/actors/white-hair-man.png
+    - assets/images/ui/home.png
+    - assets/images/ui/start.png
+    - assets/images/ui/lost.png
+    - assets/images/icon/emo_5.png
+    - assets/images/icon/emo_7.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

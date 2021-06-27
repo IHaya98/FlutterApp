@@ -31,6 +31,11 @@ void main() {
     'actors/dog.png',
     'actors/pirate-woman.png',
     'actors/samurai.png',
-    'actors/white-hair-man.png'
+    'actors/white-hair-man.png',
+    'ui/home.png',
+    'ui/start.png',
+    'ui/lost.png',
+    'icon/emo_5.png',
+    'icon/emo_7.png',
   ]);
 }
